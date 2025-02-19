@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhumicare Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Custom Properties */
+        :root {
+            --primary: #2F855A;
+            --primary-dark: #22543D;
+            --primary-light: #9AE6B4;
+            --secondary: #2C5282;
+            --accent: #F6AD55;
+            --background: #F7FAFC;
+            --surface: #FFFFFF;
+            --text: #2D3748;
+            --text-light: #718096;
+            --border: #E2E8F0;
+            --success: #48BB78;
+            --warning: #ECC94B;
+            --danger: #F56565;
+            --chart-1: #4299E1;
+            --chart-2: #48BB78;
+            --chart-3: #F6AD55;
+            --chart-4: #F56565;
+        }
+
+        /* Modern CSS Reset */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .welcome-text h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .farm-stats {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Soil Cards Grid */
+        .soil-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .soil-card {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .soil-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .card-title {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+
+        .card-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--success);
+        }
+
+        /* Charts Section */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .chart-card {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* AI Recommendations */
+        .recommendations {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .recommendation-card {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1.5rem;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .recommendation-card:hover {
+            transform: translateX(5px);
+        }
+
+        .recommendation-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 1.5rem;
+        }
+
+        .recommendation-content h3 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .recommendation-time {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        /* Action Cards */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .action-card {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .action-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .action-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-link {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .header-content {
+                grid-template-columns: 1fr;
+            }
+
+            .farm-stats {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .soil-grid, .charts-container, .actions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recommendation-card {
+                grid-template-columns: auto 1fr;
+                gap: 1rem;
+            }
+
+            .recommendation-time {
+                grid-column: span 2;
+                text-align: left;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* Loading States */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-brand">
+                <!-- <img src="/placeholder.svg?height=32&width=32" alt="Bhumicare Logo"> -->
+                <span>BHUMICARE</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link">Dashboard</a></li>
+                <li><a href="#" class="nav-link">Reports</a></li>
+                <li><a href="#" class="nav-link">Settings</a></li>
+                <li>
+                    <a href="#" class="nav-link" id="userDropdown">
+                        <!-- <img src="/placeholder.svg?height=32&width=32" alt="User Avatar" style="border-radius: 50%;"> -->
+                        <span id="username">John Doe</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <div class="welcome-text">
+                <h1>Welcome back, <span id="dashboardUsername">John</span>!</h1>
+                <p>Here's your farm's current status</p>
+            </div>
+            <div class="farm-stats">
+                <div class="stat-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="dashboardLocation">Karnataka, India</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-ruler-combined"></i>
+                    <span id="dashboardFarmSize">25 acres</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Soil Monitoring Cards -->
+    <section class="soil-grid">
+        <div class="soil-card animate-in" style="animation-delay: 0.1s">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <h3 class="card-title">Soil Moisture</h3>
+            </div>
+            <div class="card-value" id="soilMoisture">32%</div>
+            <div class="card-trend">
+                <i class="fas fa-arrow-up"></i>
+                <span>2.5% from yesterday</span>
+            </div>
+        </div>
+
+        <div class="soil-card animate-in" style="animation-delay: 0.2s">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-vial"></i>
+                </div>
+                <h3 class="card-title">pH Level</h3>
+            </div>
+            <div class="card-value" id="pHLevel">6.8</div>
+            <div class="card-trend">
+                <i class="fas fa-equals"></i>
+                <span>Optimal Range</span>
+            </div>
+        </div>
+
+        <div class="soil-card animate-in" style="animation-delay: 0.3s">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-thermometer-half"></i>
+                </div>
+                <h3 class="card-title">Temperature</h3>
+            </div>
+            <div class="card-value" id="temperature">24°C</div>
+            <div class="card-trend">
+                <i class="fas fa-arrow-down"></i>
+                <span>1.2°C from yesterday</span>
+            </div>
+        </div>
+
+        <div class="soil-card animate-in" style="animation-delay: 0.4s">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <h3 class="card-title">Nutrient Level</h3>
+            </div>
+            <div class="card-value" id="nutrientLevel">Good</div>
+            <div class="card-trend">
+                <i class="fas fa-check"></i>
+                <span>All nutrients in range</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charts Section -->
+    <section class="charts-container">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3 class="chart-title">Soil Analysis Trends</h3>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--chart-1)"></div>
+                        <span>Moisture</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--chart-2)"></div>
+                        <span>Temperature</span>
+                    </div>
+                </div>
+            </div>
+            <canvas id="soilAnalysisChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3 class="chart-title">Nutrient Distribution</h3>
+            </div>
+            <canvas id="nutrientChart"></canvas>
+        </div>
+    </section>
+
+    <!-- AI Recommendations -->
+    <section class="recommendations">
+        <h2 class="section-title">AI Recommendations</h2>
+        
+        <div class="recommendation-card animate-in">
+            <div class="recommendation-icon" style="background: var(--primary-light); color: var(--primary)">
+                💧
+            </div>
+            <div class="recommendation-content">
+                <h3>Irrigation Schedule</h3>
+                <p>Reduce irrigation today. Soil moisture levels are optimal.</p>
+            </div>
+            <span class="recommendation-time">2 hours ago</span>
+        </div>
+
+        <div class="recommendation-card animate-in">
+            <div class="recommendation-icon" style="background: var(--warning-light); color: var(--warning)">
+                🌱
+            </div>
+            <div class="recommendation-content">
+                <h3>Fertilizer Application</h3>
+                <p>Apply nitrogen-rich fertilizer within the next 3 days.</p>
+            </div>
+            <span class="recommendation-time">5 hours ago</span>
+        </div>
+
+        <div class="recommendation-card animate-in">
+            <div class="recommendation-icon" style="background: var(--danger-light); color: var(--danger)">
+                ⛈️
+            </div>
+            <div class="recommendation-content">
+                <h3>Weather Alert</h3>
+                <p>Heavy rainfall expected tomorrow. Prepare drainage systems.</p>
+            </div>
+            <span class="recommendation-time">1 day ago</span>
+        </div>
+    </section>
+
+    <!-- Action Cards -->
+    <section class="actions-grid">
+        <div class="action-card animate-in">
+            <div class="action-icon">
+                <i class="fas fa-file-download"></i>
+            </div>
+            <h3 class="action-title">Download Report</h3>
+            <p>Get detailed insights about your farm's performance</p>
+            <button class="action-button">Download PDF</button>
+        </div>
+
+        <div class="action-card animate-in">
+            <div class="action-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="action-title">Compare Performance</h3>
+            <p>See how your farm compares to previous seasons</p>
+            <button class="action-button">View Analytics</button>
+        </div>
+
+        <div class="action-card animate-in">
+            <div class="action-icon">
+                <i class="fas fa-phone-alt"></i>
+            </div>
+            <h3 class="action-title">Expert Consultation</h3>
+            <p>Schedule a call with our agricultural experts</p>
+            <button class="action-button">Book Session</button>
+        </div>
+
+        <div class="action-card animate-in">
+            <div class="action-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <h3 class="action-title">Alert Settings</h3>
+            <p>Customize your notification preferences</p>
+            <button class="action-button">Configure</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Bhumicare</h3>
+                <p>Smart farming solutions for a sustainable future</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#" class="footer-link">About Us</a></li>
+                    <li><a href="#" class="footer-link">Contact</a></li>
+                    <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                    <li><a href="#" class="footer-link">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>📞 +91 8202583698</p>
+                <p>📧 support@bhumicare.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    <script>
+        // Initialize Charts
+document.addEventListener('DOMContentLoaded', function() {
+    let soilChart;
+    let nutrientChart;
+
+    function initializeCharts() {
+        // Destroy existing chart instances if they exist
+        if (soilChart) soilChart.destroy();
+        if (nutrientChart) nutrientChart.destroy();
+
+        // Soil Analysis Chart
+        const soilCtx = document.getElementById('soilAnalysisChart').getContext('2d');
+        soilChart = new Chart(soilCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Moisture',
+                    data: [30, 29, 28, 32, 31, 30, 32],
+                    borderColor: '#A5C1DC',
+                    tension: 0.4,
+                    fill: false
+                }, {
+                    label: 'Temperature',
+                    data: [24, 23, 25, 24, 26, 25, 24],
+                    borderColor: '#AADEA7',
+                    tension: 0.4,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,  // ✅ Keeps the chart from elongating
+                aspectRatio: 1.8,         // ✅ Sets the aspect ratio (adjustable)
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 20,
+                        max: 36,
+                        ticks: {
+                            stepSize: 2,
+                            maxTicksLimit: 11,
+                            callback: function(value) {
+                                return value;
+                            }
+                        },
+                        grid: {
+                            drawBorder: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Nutrient Distribution Chart
+        const nutrientCtx = document.getElementById('nutrientChart').getContext('2d');
+        nutrientChart = new Chart(nutrientCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Nitrogen', 'Phosphorus', 'Potassium', 'Other'],
+                datasets: [{
+                    data: [30, 25, 25, 20],
+                    backgroundColor: [
+                        '#E6F69D',
+                        '#AADEA7',
+                        '#64C2A6',
+                        '#2D87BB'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,  // ✅ Keeps the chart from elongating
+                aspectRatio: 1.8,                
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                rotation: 0,
+                circumference: 360
+            }
+        });
+    }
+
+    initializeCharts();
+});
+
+
+            // Load user data
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                document.getElementById('username').textContent = userData.username;
+                document.getElementById('dashboardUsername').textContent = userData.username;
+                document.getElementById('dashboardLocation').textContent = userData.location;
+                document.getElementById('dashboardFarmSize').textContent = `${userData.farmSize} acres`;
+            }
+        
+
+        // Add animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.animate-in').forEach((el) => observer.observe(el));
+    </script>
+</body>
+</html>

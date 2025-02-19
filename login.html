@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bhumicare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        :root {
+            --primary: #2F855A;
+            --primary-light: #9AE6B4;
+            --background: #F7FAFC;
+            --text: #2D3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #E6FFFA 0%, #C6F6D5 100%);
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(47, 133, 90, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #22543D;
+            transform: translateY(-2px);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .loading div {
+            width: 8px;
+            height: 8px;
+            margin: 0 4px;
+            background: white;
+            border-radius: 50%;
+            display: inline-block;
+            animation: loading 1.4s infinite;
+        }
+
+        .loading div:nth-child(2) { animation-delay: 0.2s; }
+        .loading div:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes loading {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Error Message */
+        .error-message {
+            display: none;
+            color: #E53E3E;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        /* Responsive Design Improvements */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 1.5rem;
+                width: 90%;
+            }
+
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-control {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo">
+                <img src="https://www.pngkey.com/png/detail/78-787485_leaf-logos-svg-black-and-white-leaf-logo.png" alt="Leaf Logo">
+                <h1>BHUMICARE</h1>
+            </div>
+            <p>Enter your details to get started</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-container">
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-container">
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <div class="input-container">
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M22 16.92V19.92C22 20.4704 21.7893 20.9983 21.4142 21.3734C21.0391 21.7485 20.5112 21.9592 19.96 21.96C16.4289 21.6883 13.0155 20.5346 10.02 18.62C7.22 16.87 4.87 14.52 3.12 11.72C1.20206 8.71511 0.0479254 5.28843 -0.219995 1.74C-0.231975 1.19117 -0.0273286 0.664427 0.344827 0.289382C0.716983 -0.0856628 1.24241 -0.300161 1.79 -0.3H4.79C5.84339 -0.316619 6.74896 0.439137 6.91 1.48C7.07566 2.6675 7.37392 3.83101 7.8 4.94C8.07833 5.66091 7.91538 6.46954 7.37 7.02L6.09 8.3C7.71458 11.1991 10.0009 13.4854 12.9 15.11L14.18 13.83C14.7305 13.2846 15.5391 13.1217 16.26 13.4C17.3689 13.8261 18.5324 14.1243 19.72 14.29C20.7772 14.4535 21.5386 15.3797 21.5 16.45L22 16.92Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <input type="tel" id="phone" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="farmSize">Farm Size (in acres)</label>
+                <div class="input-container">
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M19 9L12 2L5 9H9V13H15V9H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M5 15L12 22L19 15H15V11H9V15H5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <input type="number" id="farmSize" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Location</label>
+                <div class="input-container">
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <input type="text" id="location" class="form-control" required>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span>Get Started</span>
+                <div class="loading">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </button>
+
+            <div class="error-message"></div>
+            <div class="success-message"></div>
+        </form>
+
+        <div class="form-footer">
+            <p>Already have an account? <a href="#">Sign in</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.submit-btn');
+            const btnText = submitBtn.querySelector('span');
+            const loading = submitBtn.querySelector('.loading');
+            const errorMessage = document.querySelector('.error-message');
+            const successMessage = document.querySelector('.success-message');
+
+            // Reset messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            // Show loading
+            btnText.style.opacity = '0';
+            loading.style.display = 'block';
+
+            // Get form data
+            const formData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                farmSize: document.getElementById('farmSize').value,
+                location: document.getElementById('location').value
+            };
+
+            // Store in localStorage
+            localStorage.setItem('userData', JSON.stringify(formData));
+
+            // Simulate API call
+            setTimeout(() => {
+                // Hide loading
+                btnText.style.opacity = '1';
+                loading.style.display = 'none';
+
+                // Show success message
+                successMessage.textContent = 'Login successful! Redirecting...';
+                successMessage.style.display = 'block';
+
+                // Redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

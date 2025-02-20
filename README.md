@@ -25,6 +25,6 @@ cd bhumicare
 🙌 Want to contribute? Fork the repo, make your changes, and submit a Pull Request!  
 
 ## **📞 Contact**  
-📧 **Email**: your-email@example.com  
+📧 **Email**: work.vivekranjan@gmail.com 
 
 ### **⭐ If you like this project, don’t forget to star the repository!** 🚀

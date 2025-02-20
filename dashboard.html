@@ -432,6 +432,49 @@
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
+
+        /* Hamburger menu styles */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            height: 2px;
+            width: 25px;
+            background: var(--text);
+            margin: 3px 0;
+            transition: 0.4s;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                background: var(--surface);
+                padding: 20px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -439,16 +482,22 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="#" class="nav-brand">
-                <!-- <img src="/placeholder.svg?height=32&width=32" alt="Bhumicare Logo"> -->
+                <!-- <img src="C:\Users\LENOVO\Desktop\BHUMICARE\Bhumi_TRYwithAI\logo.svg?height=32&width=32" alt="Bhumicare Logo"> -->
                 <span>BHUMICARE</span>
             </a>
-            <ul class="nav-links">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="#" class="nav-link">Dashboard</a></li>
                 <li><a href="#" class="nav-link">Reports</a></li>
                 <li><a href="#" class="nav-link">Settings</a></li>
                 <li>
                     <a href="#" class="nav-link" id="userDropdown">
-                        <!-- <img src="/placeholder.svg?height=32&width=32" alt="User Avatar" style="border-radius: 50%;"> -->
+                        <!-- <img src="C:\Users\LENOVO\Desktop\BHUMICARE\Bhumi_TRYwithAI\User Avatar.svg?height=32&width=32" alt="User Avatar" style="border-radius: 50%;"> -->
                         <span id="username">John Doe</span>
                     </a>
                 </li>
@@ -658,12 +707,13 @@
             <div class="footer-section">
                 <h3>Contact Us</h3>
                 <p>📞 +91 8202583698</p>
-                <p>📧 support@bhumicare.com</p>
+                <p>📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b0c3c5c0c0dfc2c4f0d2d8c5ddd9d3d1c2d59ed3dfdd">[email&#160;protected]</a></p>
+                <p> © 2025 Bhumicare</p>
             </div>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    <script>
         // Initialize Charts
 document.addEventListener('DOMContentLoaded', function() {
     let soilChart;
@@ -784,6 +834,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         document.querySelectorAll('.animate-in').forEach((el) => observer.observe(el));
+
+        // Hamburger menu functionality
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
     </script>
 </body>
 </html>
+

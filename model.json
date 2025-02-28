@@ -1,0 +1,7 @@
+fetch("model.json")
+  .then(response => response.json())
+  .then(model => {
+      console.log("Decision Tree Model:", model);
+      // You can now use this JSON to make predictions in JS
+  })
+  .catch(error => console.error("Error loading model:", error));

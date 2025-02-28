@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .chart-container {
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+        }
+        .profit-loss {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: green;
+        }
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Farm Performance Analytics</h2>
+
+    <div class="chart-container">
+        <canvas id="performanceChart"></canvas>
+    </div>
+
+    <div class="profit-loss" id="profitLossText"></div>
+
+    <button class="back-button" onclick="goBack()">Go Back</button>
+
+    <script>
+        function goBack() {
+            window.history.back(); // Goes back to the previous page
+        }
+
+        // Sample Data for Graph
+        const labels = ["Jan", "Feb", "Mar", "Apr", "May"];
+        const prevSeasonData = [10, 12, 15, 13, 18];
+        const currentSeasonData = [11, 14, 16, 12, 17];
+
+        // Calculate Profit/Loss
+        const prevTotal = prevSeasonData.reduce((sum, val) => sum + val, 0);
+        const currentTotal = currentSeasonData.reduce((sum, val) => sum + val, 0);
+        const difference = currentTotal - prevTotal;
+        const profitLossText = difference >= 0 
+            ? `✅ Profit: ${difference} units` 
+            : `❌ Loss: ${Math.abs(difference)} units`;
+
+        document.getElementById("profitLossText").textContent = profitLossText;
+
+        // Render Chart
+        const ctx = document.getElementById("performanceChart").getContext("2d");
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: "Previous Season",
+                        data: prevSeasonData,
+                        borderColor: "red",
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.3,
+                    },
+                    {
+                        label: "Current Season",
+                        data: currentSeasonData,
+                        borderColor: "blue",
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.3,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 20 }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

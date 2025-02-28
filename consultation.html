@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultation Booking</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    .consultation-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 320px;
+    margin: auto;
+    text-align: center;
+    }
+    .back-button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    }
+    .back-button {
+    background-color: #ff4d4d;
+}
+
+/* Contact List Styling */
+.contact-list {
+    margin-top: 15px;
+}
+
+.contact-item {
+    background: #e6f2ff;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.contact-item a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+
+</style>
+<body>
+
+    <div class="consultation-card">
+        <h2>Book a Consultation Call</h2>
+        <p>Select a number to call and schedule your session:</p>
+        
+        <div class="contact-list">
+            <div class="contact-item">
+                <span>📞 Expert 1:</span> 
+                <a href="tel:+1234567890">+1 234 567 890</a>
+            </div>
+            <div class="contact-item">
+                <span>📞 Expert 2:</span> 
+                <a href="tel:+9876543210">+9 876 543 210</a>
+            </div>
+            <div class="contact-item">
+                <span>📞 Expert 3:</span> 
+                <a href="tel:+1122334455">+1 122 334 455</a>
+            </div>
+        </div>
+
+        <button class="back-button" onclick="goBack()">Go Back</button>
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back(); // Goes back to the previous page
+        }
+    </script>
+
+</body>
+</html>

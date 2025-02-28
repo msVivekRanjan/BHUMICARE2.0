@@ -1197,12 +1197,9 @@
     initializeCharts();
 });
 document.addEventListener("DOMContentLoaded", function () {
-        
-        const highlySuitableCrops = [ "Jowar", "Bajra","Oats","Rye"];
+        const highlySuitableCrops = ["Rice", "Wheat", "Tomato", "Apple"];
         const moderatelySuitableCrops = ["Carrot", "Potato", "Orange", "Maize"];
-        const moderatelySuitableCrops = ["Soyabean","Corn","Sweet Potato", "Rice"];
         const notSuitableCrops = ["Coconut", "Pineapple", "Olive", "Grapes"];
-        const notSuitableCrops = ["Wheat","Barley", "Lentils", "Peanuts", "Chickpeas"];
 
         function getRandomCrop(cropList) {
             return cropList[Math.floor(Math.random() * cropList.length)];

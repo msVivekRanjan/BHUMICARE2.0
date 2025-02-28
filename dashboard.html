@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         /* Custom Properties */
         :root {
@@ -138,7 +139,7 @@
             margin: 0 auto;
         }
 
-        .soil-card {
+        .soil-card ,.light-card{
             background: var(--surface);
             border-radius: 1rem;
             padding: 1.5rem;
@@ -190,21 +191,26 @@
         }
 
         /* Charts Section */
+        
         .charts-container {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1.5rem;
+            grid-template-columns: repeat(2, 1fr); /* Ensures 2 equal columns */
+            gap: 1.5rem; /* Space between charts */
             padding: 2rem;
             max-width: 1400px;
             margin: 0 auto;
+            align-items: start; /* Aligns charts properly */
         }
 
         .chart-card {
             background: var(--surface);
             border-radius: 1rem;
             padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            width: 100%; /* Ensures full width inside the grid */
+            height: 450px;
         }
+
 
         .chart-header {
             display: flex;
@@ -221,6 +227,9 @@
         .chart-legend {
             display: flex;
             gap: 1rem;
+        }
+        .light-card{
+            max-width: 1400px;
         }
 
         .legend-item {
@@ -295,6 +304,7 @@
             background: var(--surface);
             border-radius: 1rem;
             padding: 1.5rem;
+            margin: auto;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             transition: transform 0.3s ease;
@@ -331,10 +341,27 @@
             font-weight: 500;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-top: 0.5rem;
         }
 
         .action-button:hover {
             background: var(--primary-dark);
+        }
+        .analytics-container {
+            display: none; /* Initially hidden */
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            margin-top: 10px; /* Spacing between button and graph */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
         }
 
         /* Footer */
@@ -373,6 +400,127 @@
         .footer-link:hover {
             color: var(--primary);
         }
+        /* Styles for Insights Section */
+.insights {
+    margin: 20px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* Controls the width of the section */
+    width: 90%; 
+}
+
+.section-header {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Suggested Crops Section */
+.suggested-crops {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px;
+    width: 90%;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+.alert-box {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    text-align: center;
+    z-index: 10;
+    width: 280px;
+}
+
+/* Alert Buttons */
+.alert-button {
+    padding: 8px 12px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.allow {
+    background-color: #28a745;
+    color: white;
+}
+
+.deny {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Crop Cards */
+.crop-card {
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 12px auto;
+    width: 90%;
+    max-width: 600px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+}
+
+.crop-card p {
+    font-size: 1.1rem;
+    font-weight: normal;
+    padding: 5px 0;
+}
+
+/* Background Colors */
+.highly-suitable {
+    background: #4CAF50; /* Green */
+}
+
+.moderately-suitable {
+    background: #FFC107; /* Yellow */
+    color: #000; /* Dark text for readability */
+}
+
+.not-suitable {
+    background: #FF5722; /* Orange */
+}
+    
+/* Fade-in animation for cards */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -542,10 +690,10 @@
             <div class="card-value" id="soilMoisture">32%</div>
             <div class="card-trend">
                 <i class="fas fa-arrow-up"></i>
-                <span>2.5% from yesterday</span>
+                <span id="trendText">2.5% from yesterday</span>
             </div>
         </div>
-
+        
         <div class="soil-card animate-in" style="animation-delay: 0.2s">
             <div class="card-header">
                 <div class="card-icon">
@@ -555,11 +703,12 @@
             </div>
             <div class="card-value" id="pHLevel">6.8</div>
             <div class="card-trend">
-                <i class="fas fa-equals"></i>
-                <span>Optimal Range</span>
+                <i id="trendIcon" class="fas fa-equals"></i>
+                <span id="trendText">Optimal Range</span>
             </div>
         </div>
 
+        <!-- Temperature Card -->
         <div class="soil-card animate-in" style="animation-delay: 0.3s">
             <div class="card-header">
                 <div class="card-icon">
@@ -567,12 +716,13 @@
                 </div>
                 <h3 class="card-title">Temperature</h3>
             </div>
-            <div class="card-value" id="temperature">24°C</div>
+            <div class="card-value" id="temperature">loading...</div> <!-- Temperature will be updated here -->
             <div class="card-trend">
                 <i class="fas fa-arrow-down"></i>
                 <span>1.2°C from yesterday</span>
             </div>
         </div>
+
 
         <div class="soil-card animate-in" style="animation-delay: 0.4s">
             <div class="card-header">
@@ -585,6 +735,32 @@
             <div class="card-trend">
                 <i class="fas fa-check"></i>
                 <span>All nutrients in range</span>
+            </div>
+        </div>
+        <div class="soil-card animate-in" style="animation-delay: 0.4s">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-wind"></i>
+                </div>
+                <h3 class="card-title">Air Purification Level</h3>
+            </div>
+            <div class="card-value" id="airPurity">Loading...</div> <!-- AQI level will update here -->
+            <div class="card-trend">
+                <i class="fas fa-info-circle"></i>
+                <span id="airQualityText">Fetching data...</span>
+            </div>
+        </div>
+        <div class="light-card animate-in" style="animation-delay: 0.4s">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-lightbulb"></i> <!-- Light bulb icon -->
+                </div>
+                <h3 class="card-title">Light Intensity</h3>
+            </div>
+            <div class="card-value" id="lightIntensity">Loading...</div> <!-- Light intensity value will update here -->
+            <div class="card-trend">
+                <i class="fas fa-info-circle"></i>
+                <span id="lightStatus">Fetching data...</span>
             </div>
         </div>
     </section>
@@ -610,11 +786,34 @@
 
         <div class="chart-card">
             <div class="chart-header">
-                <h3 class="chart-title">Nutrient Distribution</h3>
+                <h3 class="chart-title">Nutrient Levels vs. Electrical Conductivity</h3>
             </div>
-            <canvas id="nutrientChart"></canvas>
+            <canvas id="nutrientConductivityChart"></canvas>
+        </div>
+        
+    </section>
+    <section class="suggested-crops">
+        <h2 class="section-title">Suggested Crops</h2>
+    
+        <!-- Highly Suitable Crops -->
+        <div class="crop-card highly-suitable">
+            <h3>Highly Suitable 🌿</h3>
+            <p id="highlySuitableCrop"></p>
+        </div>
+    
+        <!-- Moderately Suitable Crops -->
+        <div class="crop-card moderately-suitable">
+            <h3>Moderately Suitable 🌾</h3>
+            <p id="moderatelySuitableCrop"></p>
+        </div>
+    
+        <!-- Not Suitable Crops -->
+        <div class="crop-card not-suitable">
+            <h3>Not Suitable ❌</h3>
+            <p id="notSuitableCrop"></p>
         </div>
     </section>
+    
 
     <!-- AI Recommendations -->
     <section class="recommendations">
@@ -662,25 +861,27 @@
             </div>
             <h3 class="action-title">Download Report</h3>
             <p>Get detailed insights about your farm's performance</p>
-            <button class="action-button">Download PDF</button>
+            <button class="action-button" onclick="generatePDF()">Download PDF</button>
         </div>
 
-        <div class="action-card animate-in">
-            <div class="action-icon">
-                <i class="fas fa-chart-line"></i>
-            </div>
+        <div class="action-card">
+            <div class="action-icon">📈</div>
             <h3 class="action-title">Compare Performance</h3>
             <p>See how your farm compares to previous seasons</p>
-            <button class="action-button">View Analytics</button>
+            <button class="action-button" onclick="openAnalyticsPage()">View Analytics</button>
         </div>
-
+    
+        
+    
+        <!-- Analytics Card (Hidden by default) -->
+        
         <div class="action-card animate-in">
             <div class="action-icon">
                 <i class="fas fa-phone-alt"></i>
             </div>
             <h3 class="action-title">Expert Consultation</h3>
             <p>Schedule a call with our agricultural experts</p>
-            <button class="action-button">Book Session</button>
+            <button class="action-button"  onclick="openConsultationPage()">Book Session</button>
         </div>
 
         <div class="action-card animate-in">
@@ -689,7 +890,12 @@
             </div>
             <h3 class="action-title">Alert Settings</h3>
             <p>Customize your notification preferences</p>
-            <button class="action-button">Configure</button>
+            <button class="action-button" onclick="showAlert()">Configure</button>
+        </div>
+        <div id="custom-alert" class="alert-box">
+            <p>Do you want to allow all notifications?</p>
+            <button class="alert-button allow" onclick="allowNotifications()">Allow</button>
+            <button class="alert-button deny" onclick="denyNotifications()">Don't Allow</button>
         </div>
     </section>
 
@@ -720,12 +926,145 @@
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    <script>
         // Initialize Charts
-document.addEventListener('DOMContentLoaded', function() {
+        function getRandomSoilMoisture() {
+        let min = 27;
+        let max = 35;
+        let randomValue = (Math.random() * (max - min) + min).toFixed(1); // Generates a random decimal between 27 and 35
+        document.getElementById("soilMoisture").innerText = randomValue + "%";
+    }
+
+    function getRandomPHLevel() {
+        let min = 6.5;
+        let max = 7.0;
+        let randomPH = (Math.random() * (max - min) + min).toFixed(1); // Generates a random decimal between 6.5 and 7.0
+        document.getElementById("pHLevel").innerText = randomPH;
+    }
+
+    // Call both functions on page load
+    function fetchTemperature() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    let lat = position.coords.latitude;
+                    let lon = position.coords.longitude;
+                    let apiKey = "8be232073856377438aff9afb3f13071"; // Replace with OpenWeather API Key
+                    let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            let temperature = data.main.temp.toFixed(1); // Get temperature and round it
+                            document.getElementById("temperature").innerText = temperature + "°C";
+                        })
+                        .catch(error => console.error("Error fetching temperature:", error));
+                },
+                (error) => {
+                    console.error("Error getting location:", error);
+                    document.getElementById("temperature").innerText = "Location Error";
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+            document.getElementById("temperature").innerText = "Not Supported";
+        }
+    }
+    function fetchAirQuality() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    let lat = position.coords.latitude;
+                    let lon = position.coords.longitude;
+                    let apiKey = "8be232073856377438aff9afb3f13071"; // Replace with your OpenWeather API Key
+                    let url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            let aqi = data.list[0].main.aqi; // AQI value (1 to 5)
+                            let aqiText = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
+                            let airQuality = aqiText[aqi - 1]; // Get AQI description
+
+                            document.getElementById("airPurity").innerText = `AQI: ${aqi}`;
+                            document.getElementById("airQualityText").innerText = airQuality;
+                        })
+                        .catch(error => console.error("Error fetching air quality:", error));
+                },
+                (error) => {
+                    console.error("Error getting location:", error);
+                    document.getElementById("airPurity").innerText = "Location Error";
+                    document.getElementById("airQualityText").innerText = "Unable to fetch data";
+                }
+            );
+        } else {
+            console.error("Geolocation not supported.");
+            document.getElementById("airPurity").innerText = "Not Supported";
+            document.getElementById("airQualityText").innerText = "Enable location services";
+        }
+    }
+    function updateLightIntensity() {
+        let lux = (Math.random() * (1000 - 10) + 10).toFixed(2); // Random LDR value (10-1000 lux)
+        document.getElementById("lightIntensity").innerText = lux + " lx";
+
+        let card=document.querySelector(".light-card")
+        let statusText = "";
+
+        if (lux < 50) {
+            card.style.backgroundColor = "#2c2c2c"; // Dark
+            card.style.color = "white";
+            statusText = "Very Dim - Increase Light!";
+        } else if (lux < 200) {
+            card.style.backgroundColor = "#808080"; // Gray
+            card.style.color = "white";
+            statusText = "Dim Light - Consider increasing.";
+        } else if (lux < 500) {
+            card.style.backgroundColor = "#47AF50"; // Green
+            card.style.color = "white";
+            statusText = "Normal Light - Comfortable.";
+        } else if (lux < 700) {
+            card.style.backgroundColor = "#FFA500"; // Orange
+            card.style.color = "black";
+            statusText = "Bright - Slightly high.";
+        } else {
+            card.style.backgroundColor = "#FF4500"; // Red
+            card.style.color = "white";
+            statusText = "Too Bright! Reduce Light!";
+        }
+
+        document.getElementById("lightStatus").innerText = statusText;
+    }
+
+    
+
+    // Fetch air quality on page load
+    
+
+
+    // Run all functions when page loads
+    window.onload = function () {
+        getRandomSoilMoisture();
+        getRandomPHLevel();
+        fetchTemperature();
+        fetchAirQuality();
+        updateLightIntensity();
+    };
+
+    // Update pH level every 90 seconds (trend text remains unchanged)
+    setInterval(getRandomPHLevel, 90000);
+    document.addEventListener('DOMContentLoaded', function () {
     let soilChart;
     let nutrientChart;
+    const xLabels = [10, 20, 30, 40, 50]; // Fixed X-axis values
+    let time = 0; // Time counter for smooth transitions
+
+    function generateParabolicValues() {
+        const a = 0.0008; // Adjusted for range -0.5 to 0.5
+        const h = 30;   // Moves the vertex along the X-axis
+        const k = 0;    // Center at 0
+        return xLabels.map(x => a * (x - h) ** 2 + k);
+    }
 
     function initializeCharts() {
-        // Destroy existing chart instances if they exist
+        // Destroy existing charts if they exist
         if (soilChart) soilChart.destroy();
         if (nutrientChart) nutrientChart.destroy();
 
@@ -735,24 +1074,27 @@ document.addEventListener('DOMContentLoaded', function() {
             type: 'line',
             data: {
                 labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'Moisture',
-                    data: [30, 29, 28, 32, 31, 30, 32],
-                    borderColor: '#A5C1DC',
-                    tension: 0.4,
-                    fill: false
-                }, {
-                    label: 'Temperature',
-                    data: [24, 23, 25, 24, 26, 25, 24],
-                    borderColor: '#AADEA7',
-                    tension: 0.4,
-                    fill: false
-                }]
+                datasets: [
+                    {
+                        label: 'Moisture',
+                        data: [30, 29, 28, 32, 31, 30, 32],
+                        borderColor: '#A5C1DC',
+                        tension: 0.4,
+                        fill: false
+                    },
+                    {
+                        label: 'Temperature',
+                        data: [24, 23, 25, 24, 26, 25, 24],
+                        borderColor: '#AADEA7',
+                        tension: 0.4,
+                        fill: false
+                    }
+                ]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,  // ✅ Keeps the chart from elongating
-                aspectRatio: 1.8,         // ✅ Sets the aspect ratio (adjustable)
+                maintainAspectRatio: true,
+                aspectRatio: 1.8, // Adjust to your need
                 plugins: {
                     legend: {
                         display: false
@@ -765,10 +1107,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         max: 36,
                         ticks: {
                             stepSize: 2,
-                            maxTicksLimit: 11,
-                            callback: function(value) {
-                                return value;
-                            }
+                            maxTicksLimit: 11
                         },
                         grid: {
                             drawBorder: false
@@ -783,39 +1122,120 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Nutrient Distribution Chart
-        const nutrientCtx = document.getElementById('nutrientChart').getContext('2d');
-        nutrientChart = new Chart(nutrientCtx, {
-            type: 'doughnut',
+        // Nutrient Levels vs. Electrical Conductivity Chart
+        const ctxEC = document.getElementById('nutrientConductivityChart').getContext('2d');
+
+        nutrientChart = new Chart(ctxEC, {
+            type: 'line',
             data: {
-                labels: ['Nitrogen', 'Phosphorus', 'Potassium', 'Other'],
+                labels: xLabels,
                 datasets: [{
-                    data: [30, 25, 25, 20],
-                    backgroundColor: [
-                        '#E6F69D',
-                        '#AADEA7',
-                        '#64C2A6',
-                        '#2D87BB'
-                    ]
+                    label: 'Electrical Conductivity (mS/cm)',
+                    data: generateParabolicValues(), // Initial Y-values
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.4
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,  // ✅ Keeps the chart from elongating
-                aspectRatio: 1.8,                
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
+                animation: {
+                    duration: 500
                 },
-                rotation: 0,
-                circumference: 360
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: -0.5,
+                        max: 0.5,
+                        title: {
+                            display: true,
+                            text: 'EC (mS/cm)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Nutrient Levels'
+                        }
+                    }
+                }
             }
         });
+
+        // Dynamic Update
+        setInterval(() => {
+            time += 0.1; // Increment time for slight variation
+            let newData = generateParabolicValues().map(y => {
+                let variation = Math.sin(time) * 0.1;
+                let updatedY = y + variation;
+                return Math.max(-0.5, Math.min(0.5, updatedY)); // Clamp values within range
+            });
+
+            nutrientChart.data.datasets[0].data = newData;
+            nutrientChart.update();
+        }, 1000);
     }
 
+    // Initialize charts when the page loads
     initializeCharts();
 });
+document.addEventListener("DOMContentLoaded", function () {
+        const highlySuitableCrops = ["Rice", "Wheat", "Tomato", "Apple"];
+        const moderatelySuitableCrops = ["Carrot", "Potato", "Orange", "Maize"];
+        const notSuitableCrops = ["Coconut", "Pineapple", "Olive", "Grapes"];
+
+        function getRandomCrop(cropList) {
+            return cropList[Math.floor(Math.random() * cropList.length)];
+        }
+
+        document.getElementById("highlySuitableCrop").textContent = getRandomCrop(highlySuitableCrops);
+        document.getElementById("moderatelySuitableCrop").textContent = getRandomCrop(moderatelySuitableCrops);
+        document.getElementById("notSuitableCrop").textContent = getRandomCrop(notSuitableCrops);
+});
+function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add content to PDF
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(18);
+            doc.text("Farm Performance Report", 20, 20);
+            doc.setFontSize(12);
+            doc.text("Detailed insights about your farm's performance.", 20, 30);
+
+            // Adding some sample data
+            doc.setFont("helvetica", "normal");
+            doc.text("1. Soil EC: 0.91 mS/cm", 20, 50);
+            doc.text("2. Soil Moisture:Dry-Water Needed!", 20, 60);
+            doc.text("3. Weather Forecast: Rain Expected Tomorrow", 20, 70);
+            doc.text("3. Gas Sensor:Air Quality Normal", 20, 80);
+            doc.text("3.Light Sensor:More Light Needed", 20, 90);
+            
+
+            // Save the PDF
+            doc.save("Farm_Report.pdf");
+}
+function openAnalyticsPage() {
+            window.location.href = "analytics.html"; // Redirects to the new page
+}
+function openConsultationPage() {
+            window.location.href = "consultation.html"; // Redirects to the consultation page
+}
+function showAlert() {
+            document.getElementById("custom-alert").style.display = "flex";
+        }
+
+        function allowNotifications() {
+            alert("✅ Notifications Enabled!");
+            document.getElementById("custom-alert").style.display = "none";
+        }
+
+        function denyNotifications() {
+            alert("❌ Notifications Disabled!");
+            document.getElementById("custom-alert").style.display = "none";
+}
 
 
             // Load user data
@@ -850,4 +1270,3 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 </body>
 </html>
-
